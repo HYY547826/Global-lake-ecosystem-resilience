@@ -1,0 +1,71 @@
+import numpy as np
+import pandas as pd
+
+df = pd.read_csv(r'--')
+# print(df)
+q = 1
+r = 1
+for i in range(0, 1050):
+    df1 = df.iloc[0:114, q:q+r]
+    # print(i)
+    q +=1
+    print(str(i))
+    x = 0
+    w = 1
+    n = 6
+    odd = []
+    eve = []
+    odd1 = []
+    eve1 = []
+
+    for s in range(0, 108):
+        data = df1.iloc[x:x + n, 0]
+        data = data.values.tolist()
+        # print(data)
+        x = 1 + x
+        # print(data)
+        odd.append(data)
+
+    # print(odd)
+    for l in range(0, 108):
+        data = df1.iloc[w:w + n, 0]
+        data = data.values.tolist()
+        # print(data)
+        w = 1 + w
+        # print(data)
+        eve.append(data)
+
+    # print(eve)
+
+    for a in odd:
+        for b in a:
+            odd1.append(b)
+
+    for c in eve:
+        for d in c:
+            eve1.append(d)
+
+    
+    data_odd = pd.DataFrame(odd1)
+    data_eve = pd.DataFrame(eve1)
+
+    # print(data_eve)
+    data_m = pd.concat([data_odd, data_eve], axis=1)
+   
+    e = 0
+    f = 6
+
+    for t in range(0, 108):
+        data_m1 = data_m.iloc[e:e + f, 0:2]
+        # print(data_m1)
+        x = data_m.iloc[e:e + f, 0]
+        y = data_m.iloc[e:e + f, 1]
+        # print(x)
+        e = e + f
+
+        s1 = pd.Series(x)
+        sw = s1.skew()
+        print(sw)
+        with open(r'--', 'a+') as af:
+            af.write(str(sw) + '\n')
+            af.close()
