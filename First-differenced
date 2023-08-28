@@ -1,0 +1,23 @@
+import pandas as pd
+from numpy import mean
+import numpy as np
+
+df = pd.read_csv(r'--')
+q = 1
+r = 1
+
+pd.set_option('display.max_rows', None)
+for i in range(0, 1050):
+    df1 = df.iloc[0:116, q:q + r]
+    # print(i)
+    q += 1
+    print(str(i))
+    diff1 = df1.diff(1).dropna()
+    # data = diff1.apply(pd.to_numeric)
+    data = str(diff1)
+
+    print(data)
+    # data = pd.concat()
+
+    with open(r'--', 'a+') as af:
+        af.write(data + '\n')
