@@ -1,0 +1,49 @@
+import numpy as np
+import pandas as pd
+
+def cos_staut_check(data):
+    
+    from scipy.stats import binom
+
+    lst = data.copy()
+    raw_len = len(lst)
+    if raw_len % 2 == 1:
+        lst = np.delete(lst, int((raw_len - 1) / 2))
+    c = int(len(lst) / 2)
+    n_pos = n_neg = 0
+    for i in range(c):
+        diff = lst[i + c] - lst[i]
+        if diff > 0:
+            n_pos += 1
+        elif diff < 0:
+            n_neg += 1
+        else:
+            continue
+    num = n_pos + n_neg
+    k = min(n_pos, n_neg)
+    p_value = 2 * binom.cdf(k, num, 0.5)
+    if p_value >= 0.05:
+        return "no trend"
+    elif n_neg > n_pos:
+        return "decreasing"
+    elif n_pos > n_neg:
+        return "increasing"
+
+
+if __name__ == '__main__':
+   
+    data = pd.read_csv(r'--')
+
+    q = 1
+    r = 1
+    for i in range(0, 1049):
+
+        X = data.iloc[0:112, q]
+        print(X)
+        q += 1
+        result = cos_staut_check(X)
+        print(result)
+        with open(r'--',
+                  'a+') as af:
+            af.write(str(result) + '\n')
+            af.close()
