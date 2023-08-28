@@ -1,0 +1,44 @@
+import numpy as np
+from scipy.stats import norm
+import pandas as pd
+from numpy import mean
+
+
+def mk_test(x, alpha=0.05):
+    
+    n = len(x)
+    s = 0
+    for i in range(n-1):
+        for j in range(i+1, n):
+            s += np.sign(x[j] - x[i])
+    var_s = n*(n-1)*(2*n+5)/18
+    if s > 0:
+        trend = 'increasing'
+    elif s < 0:
+        trend = 'decreasing'
+    else:
+        trend = 'no trend'
+    z = (s - 1)/np.sqrt(var_s)
+    p = 2*(1 - norm.cdf(abs(z)))
+    h = abs(z) > norm.ppf(1 - alpha/2)
+    return trend, h, p, z
+
+
+df = pd.read_csv(r'--')
+
+q = 1
+r = 1
+for i in range(0, 1049):
+    # x = df.iloc[0:106, q:q+r]
+    x = df.iloc[0:108, q]
+    print(x)
+    q +=1
+
+    result = mk_test(x)
+    print(result)
+    print(str(i+1))
+
+    with open(r'--',
+              'a+') as af:
+        af.write(str(result) + '\n')
+        af.close()
